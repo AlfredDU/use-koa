@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+
+</head>
+<body>
+
+<h1>Fill in form: </h1>
+
+<form method="{{ method }}" action="/target" enctype="multipart/form-data">
+    <label> Text:
+        <input type="text" name="text_field" >
+    </label>
+
+    {{#eq method 'post' }}
+        <label> File:
+            <input type="file" name="file_field">
+        </label>
+    {{/eq }}
+
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>

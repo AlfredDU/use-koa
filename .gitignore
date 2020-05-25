@@ -1,0 +1,11 @@
+.idea/
+
+package-lock.json
+node_modules/
+
+dist/
+*.map
+
+db/
+
+test*
