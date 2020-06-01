@@ -110,6 +110,6 @@ router.get('/logo', async ctx => {
 app.use(router.routes())
 
 // start server
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 console.log('Server has started and listen to port ' + PORT)
 app.listen(PORT)
