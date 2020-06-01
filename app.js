@@ -9,7 +9,6 @@ const KoaJson = require('koa-json')
 const KoaRouter = require('koa-router')
 const KoaViews = require('koa-views')
 const KoaStaticServe = require('koa-static')
-const level = require('level')
 
 
 // web application
@@ -25,7 +24,7 @@ app.use(KoaViews(path.join(__dirname, 'templates'), {  // template engine
 app.use(KoaStaticServe(path.join(__dirname, 'public')))  // public files
 
 // database
-const db = level(path.join(__dirname, 'db'))
+const { Doc } = require('./models')
 
 
 // router
@@ -56,19 +55,10 @@ router.get('/api', ctx => {
     ctx.body = { status: true }
 })
 
-// backend database (leveldb)
+// backend database (`sequelize ORM`)
 router.get('/api/auto-id', async ctx => {
-    let _id
-    try {
-        _id = await db.get('auto-id', {valueEncoding: 'json'})
-    } catch (err) {
-        console.error(err)
-        _id = 0
-        await db.put('auto-id', _id, {valueEncoding: 'json'})
-    }
-
-    ctx.body = { id: _id }
-    await db.put('auto-id', _id + 1, {valueEncoding: 'json'})
+    const new_record = await Doc.create({ body: '{}' })
+    ctx.body = { id: new_record.id }
 })
 
 // redirect
