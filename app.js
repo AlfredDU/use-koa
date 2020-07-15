@@ -32,17 +32,17 @@ const router = KoaRouter()
 
 // public plain text
 router.get('/', ctx => {
-    ctx.body = 'hello world!'
+    ctx.response.body = 'hello world!'
 })
 
 // get query parameters
 router.get('/users', ctx => {
-    ctx.body = 'hello ' + JSON.stringify(ctx.query)
+    ctx.response.body = 'hello ' + JSON.stringify(ctx.request.query)
 })
 
 // path parameters
 router.get('/users/:id', ctx => {
-    ctx.body = `hello to ${ctx.params.id}`
+    ctx.response.body = `hello to ${ctx.params.id}`
 })
 
 // render template
@@ -52,13 +52,13 @@ router.get('/view', async ctx => {
 
 // response json
 router.get('/api', ctx => {
-    ctx.body = { status: true }
+    ctx.response.body = { status: true }
 })
 
 // backend database (`sequelize ORM`)
 router.get('/api/auto-id', async ctx => {
     const new_record = await Doc.create({ body: '{}' })
-    ctx.body = { id: new_record.id }
+    ctx.response.body = { id: new_record.id }
 })
 
 // redirect
@@ -74,7 +74,7 @@ router.get('/form/:method', async ctx => {
 
 // parse request
 router.get('/target', ctx => {
-    ctx.body = JSON.stringify(ctx.query)
+    ctx.response.body = JSON.stringify(ctx.request.query)
 })
 
 router.post('/target', async ctx => {  // request with files
@@ -86,14 +86,14 @@ router.post('/target', async ctx => {  // request with files
         request_data[k] = buffer.toString('base64')  // cast binary to base64
     }
 
-    ctx.body = request_data
+    ctx.response.body = request_data
 })
 
 // response binary
 router.get('/logo', async ctx => {
     const buffer = await fs.readFile(path.join(__dirname, 'public', 'images', 'js-logo.png'))
-    ctx.type = 'image/png'
-    ctx.body = buffer
+    ctx.response.type = 'image/png'
+    ctx.response.body = buffer
 })
 
 
